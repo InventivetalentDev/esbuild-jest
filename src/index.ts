@@ -25,21 +25,6 @@ const createTransformer = (options?: Options) => ({
       ? { sourcemap: true, sourcesContent: false, sourcefile: filename } 
       : {}
 
-    /// this logic or code from 
-    /// https://github.com/threepointone/esjest-transform/blob/main/src/index.js
-    /// this will support the jest.mock
-    /// https://github.com/aelbore/esbuild-jest/issues/12
-    /// TODO: transform the jest.mock to a function using babel traverse/parse then hoist it
-    if (sources.code.indexOf("ock(") >= 0 || opts?.instrument) {
-      const source = require('./transformer').babelTransform({
-        sourceText: content,
-        sourcePath: filename,
-        config,
-        options: opts
-      })
-      sources.code = source
-    }
-
     const result = transformSync(sources.code, {
       loader,
       format: options?.format as Format || 'cjs',
